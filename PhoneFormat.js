@@ -20,7 +20,7 @@ Version: libphonenumber r680
  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  See the License for the specific language governing permissions and
  limitations under the License.
- 
+
 
 
 Usage...
@@ -44,28 +44,27 @@ countryForE164Number("US", "+18646978257");
 formatInternational("US", "8646978257");
  Returns: (864) 697-8257
  Info: This is the format you use if you are displaying this number to users outside the US
- 
+
 formatLocal("US", "8646978257");
  Returns: (864) 697-8257
  Info: This is the format you use if you are displaying this number to users inside the US
        (In certain countries, this format will be different then the international format)
- 
+
 countryCodeToName("US");
  Returns: United States
-        
-        
+
+
 
 */
-
 
 // -------------------------------------------------------------------------
 function countryForE164Number(phone) {
         /*
-        
+
         Return the country code for an e164 formatted number
-        
+
         phone (String) phone number in e164 format to return the country code for
-        
+
         */
         try {
                 var phone = cleanPhone(phone);
@@ -82,14 +81,14 @@ function countryForE164Number(phone) {
 // -------------------------------------------------------------------------
 function formatNumberForMobileDialing(country, phone) {
         /*
-        
+
         Returns a number formatted in such a way that it can be dialed from a mobile
         phone in a specific region. If the number cannot be reached from the region
         (e.g. some countries block toll-free numbers from being called outside of the
         country), the method returns an empty string.
-        
+
         */
-        
+
         try {
                 var phone = cleanPhone(phone);
                 var phoneUtil = i18n.phonenumbers.PhoneNumberUtil.getInstance();
@@ -105,13 +104,13 @@ function formatNumberForMobileDialing(country, phone) {
 // -------------------------------------------------------------------------
 function isValidNumber(phone, country) {
         /*
-        
+
         Tests whether a phone number matches a valid pattern. Note this doesn't
         verify the number is actually in use, which is impossible to tell by just
         looking at a number itself.
-        
+
         */
-        
+
         try {
                 var phone = cleanPhone(phone);
                 var phoneUtil = i18n.phonenumbers.PhoneNumberUtil.getInstance();
@@ -125,14 +124,14 @@ function isValidNumber(phone, country) {
 // -------------------------------------------------------------------------
 function formatE164(country, phone) {
         /*
-        
+
         Return the phone number in e164 format
-        
+
         country (String) 2 digit country code
         phone (String) phone number to format
-        
+
         */
-        
+
         try {
                 var phone = cleanPhone(phone);
                 var phoneUtil = i18n.phonenumbers.PhoneNumberUtil.getInstance();
@@ -147,17 +146,17 @@ function formatE164(country, phone) {
 }
 
 
-// -------------------------------------------------------------------------  
+// -------------------------------------------------------------------------
 function formatInternational(country, phone) {
         /*
-        
+
         Return the phone number in international format
-        
+
         country (String) 2 digit country code
         phone (String) phone number to format
-        
+
         */
-        
+
         try {
                 var phone = cleanPhone(phone);
             var formatter = new i18n.phonenumbers.AsYouTypeFormatter(country);
@@ -175,14 +174,14 @@ function formatInternational(country, phone) {
 // -------------------------------------------------------------------------
 function formatLocal(country, phone) {
         /*
-        
+
         Return the phone number in the format local to the user
-        
+
         country (String) 2 digit country code
         phone (String) phone number to format
-        
+
         */
-        
+
         try {
                 var phone = cleanPhone(phone);
                 var phoneUtil = i18n.phonenumbers.PhoneNumberUtil.getInstance();
@@ -199,17 +198,17 @@ function formatLocal(country, phone) {
                 return formatInternational(country, phone);
         }
 }
-    
+
 // -------------------------------------------------------------------------
 function exampleLandlineNumber(country) {
         /*
-	
+
         Returns an example land line phone number for the specified country
-	
+
         country (String) 2 digit country code
-	
+
         */
-	
+
         try {
                 var phoneUtil = i18n.phonenumbers.PhoneNumberUtil.getInstance();
                 var output = phoneUtil.getExampleNumber(country);
@@ -217,18 +216,18 @@ function exampleLandlineNumber(country) {
         } catch (e) {
                 return "";
         }
-}   
+}
 
 // -------------------------------------------------------------------------
 function exampleMobileNumber(country) {
         /*
-	
+
         Returns an example mobile phone number for the specified country
-	
+
         country (String) 2 digit country code
-	
+
         */
-	
+
         try {
                 var phoneUtil = i18n.phonenumbers.PhoneNumberUtil.getInstance();
                 var output = phoneUtil.getExampleNumberForType(country, i18n.phonenumbers.PhoneNumberType.MOBILE);
@@ -241,13 +240,13 @@ function exampleMobileNumber(country) {
 // -------------------------------------------------------------------------
 function cleanPhone(phone) {
         /*
-        
+
         Remove any non numeric characters from the phone number but leave any plus sign at the beginning
-        
+
         phone (String) phone number to clean
-        
+
         */
-        
+
         phone = phone.replace(/[^\d\+]/g,'');
         if (phone.substr(0, 1) == "+") {
                 phone = "+" + phone.replace(/[^\d]/g,'');
@@ -260,13 +259,13 @@ function cleanPhone(phone) {
 // -------------------------------------------------------------------------
 function countryCodeToName(countryCode) {
         /*
-        
+
         Convert the country code to a name
-        
+
         country (String) 2 digit country code
-        
+
         */
-        
+
         var arrCountry = new Array();
         arrCountry['AF'] = "Afghanistan";
         arrCountry['AL'] = "Albania";
@@ -512,7 +511,7 @@ function countryCodeToName(countryCode) {
         arrCountry['YU'] = "Yugoslavia";
         arrCountry['ZM'] = "Zambia";
         arrCountry['ZW'] = "Zimbabwe";
-        
+
         var name = arrCountry[countryCode.toUpperCase()];
         if (name === undefined) {
                 return "";
@@ -1395,3 +1394,28 @@ i18n.phonenumbers.AsYouTypeFormatter.prototype.attemptToExtractCountryCallingCod
 a!=this.defaultCountry_&&(this.currentMetadata_=this.getMetadataForRegion_(a));this.prefixBeforeNationalNumber_.append(""+b).append(i18n.phonenumbers.AsYouTypeFormatter.SEPARATOR_BEFORE_NATIONAL_NUMBER_);this.extractedNationalPrefix_="";return!0};
 i18n.phonenumbers.AsYouTypeFormatter.prototype.normalizeAndAccrueDigitsAndPlusSign_=function(a,b){var c;a==i18n.phonenumbers.PhoneNumberUtil.PLUS_SIGN?(c=a,this.accruedInputWithoutFormatting_.append(a)):(c=i18n.phonenumbers.PhoneNumberUtil.DIGIT_MAPPINGS[a],this.accruedInputWithoutFormatting_.append(c),this.nationalNumber_.append(c));b&&(this.positionToRemember_=this.accruedInputWithoutFormatting_.getLength());return c};
 i18n.phonenumbers.AsYouTypeFormatter.prototype.inputDigitHelper_=function(a){var b=this.formattingTemplate_.toString();if(0<=b.substring(this.lastMatchPosition_).search(this.DIGIT_PATTERN_)){var c=b.search(this.DIGIT_PATTERN_);a=b.replace(this.DIGIT_PATTERN_,a);this.formattingTemplate_.clear();this.formattingTemplate_.append(a);this.lastMatchPosition_=c;return a.substring(0,this.lastMatchPosition_+1)}1==this.possibleFormats_.length&&(this.ableToFormat_=!1);this.currentFormattingPattern_="";return this.accruedInput_.toString()};
+
+Phone = {
+  // formatE164("US", "8646978257");
+  // Returns: +18646978257
+  formatE164: formatE164,
+
+  //countryForE164Number("US", "+18646978257");
+  //Returns: US
+  countryForE164Number: countryForE164Number,
+
+  //formatInternational("US", "8646978257");
+  //Returns: (864) 697-8257
+  //Info: This is the format you use if you are displaying this number to users outside the US
+  formatInternational: formatInternational,
+
+  //formatLocal("US", "8646978257");
+  //Returns: (864) 697-8257
+  //Info: This is the format you use if you are displaying this number to users inside the US
+  //(In certain countries, this format will be different then the international format)
+  formatLocal: formatLocal,
+
+  //countryCodeToName("US");
+  //Returns: United States
+  countryCodeToName: countryCodeToName
+};
