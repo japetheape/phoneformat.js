@@ -1,0 +1,14 @@
+<template name="InternationalPhoneInput">
+  <div class="inputs {{class}}">
+    <input
+      class="dial-code"
+      autocomplete="off"
+      value="{{dialCode}}"
+      type="tel" >
+    <input
+      class="phone-number"
+      autocomplete="off"
+      placeholder="{{#if placeholder}}{{placeholder}}{{else}}{{exampleCountryNumber}}{{/if}}"
+      type="tel" >
+  </div>
+</template>
