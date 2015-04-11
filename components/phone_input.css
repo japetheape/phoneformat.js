@@ -1,4 +1,4 @@
-input {
+.dial-code, .phone-number {
   display: inline-block;
   vertical-align: top;
   border: none;

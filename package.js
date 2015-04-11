@@ -11,7 +11,8 @@ Package.onUse(function (api) {
   ], 'web');
 
   api.addFiles([
-    'PhoneFormat.js',
+    'phoneformat.js',
+    'phone.js',
     'country_code_map.js',
     'components/phone_input.html', 'components/phone_input.css', 'components/phone_input.js'
   ], 'web');

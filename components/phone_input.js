@@ -37,7 +37,7 @@ Template.InternationalPhoneInput.events({
 });
 
 Template.InternationalPhoneInput.created = function () {
-  Phone._getCountryFromIP(function (country) {
+  Phone._getCountryForIp(function (country) {
     countryVar.set(country);
 
     var countryName = Phone.countryCodeToName(country);
