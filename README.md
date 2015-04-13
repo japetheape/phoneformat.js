@@ -22,6 +22,9 @@ Phone.formatLocal('US', '8646978257');
 // Returns: United States
 Phone.countryCodeToName('US');
 
+// Returns: United States
+Phone.dialCodeToName('+1');
+
 // Returns: +18646978257
 Phone.cleanPhone('+1 (864) 697-8257');
 ```
