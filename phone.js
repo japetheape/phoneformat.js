@@ -179,7 +179,7 @@ Phone.cleanPhone = function (phone) {
   return phone;
 };
 
-var countryCodeToNameArr = new Array();
+var countryCodeToNameArr = {};
 
 countryCodeToNameArr['AF'] = "Afghanistan";
 countryCodeToNameArr['AL'] = "Albania";
@@ -434,7 +434,7 @@ Phone.countryCodeToName = function (countryCode) {
   return name || '';
 };
 
-var dialCodeToNameArr = new Array();
+var dialCodeToNameArr = {};
 
 dialCodeToNameArr['+93'] = "Afghanistan";
 dialCodeToNameArr['+355'] = "Albania";
