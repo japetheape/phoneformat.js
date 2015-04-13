@@ -7,7 +7,7 @@ Package.describe({
 
 Package.onUse(function (api) {
   api.use([
-    'reactive-var', 'templating'
+    'reactive-var@1.0.5', 'templating@1.1.1'
   ], 'web');
 
   api.addFiles([
