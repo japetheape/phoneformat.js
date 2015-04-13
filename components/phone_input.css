@@ -1,0 +1,26 @@
+.dial-code, .phone-number {
+  display: inline-block;
+  vertical-align: top;
+  border: none;
+  outline: none;
+  height: 100%;
+  float: left;
+}
+
+.inputs {
+  background: #FFF;
+  padding: 10px 0;
+}
+
+.dial-code {
+  padding: 0 10px 0 0;
+  width: 25%;
+  text-align: right;
+}
+
+.phone-number {
+  border-left: 1px solid #CDCDCD;
+  padding: 0 0 0 10px;
+  width: 75%;
+}
+

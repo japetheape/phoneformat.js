@@ -3,12 +3,19 @@ Package.describe({
   summary: 'phoneformat.js packaged for meteor',
   version: '1.0.0',
   git: 'https://github.com/DispatchMe/phoneformat.js.git',
-  // meteor cannot process the README.md
-  documentation: null
 });
 
 Package.onUse(function (api) {
-  api.addFiles('PhoneFormat.js', 'web');
+  api.use([
+    'reactive-var', 'templating'
+  ], 'web');
+
+  api.addFiles([
+    'phoneformat.js',
+    'phone.js',
+    'country_code_map.js',
+    'components/phone_input.html', 'components/phone_input.css', 'components/phone_input.js'
+  ], 'web');
 
   api.export('Phone', 'web');
 });
