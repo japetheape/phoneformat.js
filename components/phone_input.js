@@ -63,6 +63,8 @@ Template.InternationalPhoneInput.created = function () {
 };
 
 Template.InternationalPhoneInput.dialCode = function (newDialCode) {
+  // Set the dial code input value and trigger the input event
+  // to apply the correct mask to the phone number input
   if (newDialCode) $('.dial-code').val(newDialCode).trigger('input');
 
   var dialCode = dialCodeVar.get();
@@ -74,6 +76,7 @@ Template.InternationalPhoneInput.dialCode = function (newDialCode) {
 };
 
 Template.InternationalPhoneInput.phoneNumber = function (newPhoneNumber) {
+  // Set the phone number input value and trigger the input event to apply the correct mask
   if (newPhoneNumber) $('.phone-number').val(newPhoneNumber).trigger('input');
 
   var phoneNumber = $('.phone-number').val();

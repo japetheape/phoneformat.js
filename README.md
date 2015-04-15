@@ -37,22 +37,22 @@ Phone.cleanPhone('+1 (864) 697-8257');
 This provides a template for a split input field for both an international dial code and the national phone format.
 
 ```
-// Get the value from the dial code and phone number inputs
+// The value from the dial code and phone number inputs
 // Ex. +15555555555
 Template.InternationalPhoneInput.value();
 
-// Get just the value of the dial code input
+// The dial code input value
 // Ex. +1
 Template.InternationalPhoneInput.dialCode();
 
-// Get just the value of the phone number input
+// The phone number input value
 // Ex. 5555555555
 Template.InternationalPhoneInput.phoneNumber();
 
-// Set the value of the dial code input
+// Set the dial code input value
 Template.InternationalPhoneInput.dialCode('+1');
 
-// Set the value of the phone number input
+// Set the phone number input value
 // Ex. 5555555555
 Template.InternationalPhoneInput.phoneNumber('5555555555');
 ```
