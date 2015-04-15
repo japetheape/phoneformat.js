@@ -62,13 +62,30 @@ Template.InternationalPhoneInput.created = function () {
   });
 };
 
-Template.InternationalPhoneInput.value = function (excludeDialCode) {
-  var phoneNumber = $('.phone-number').val();
-  var dialCode = $('.dial-code').val();
+Template.InternationalPhoneInput.dialCode = function (newDialCode) {
+  if (newDialCode) $('.dial-code').val(newDialCode).trigger('input');
 
-  phoneNumber = Phone.cleanPhone(phoneNumber);
+  var dialCode = dialCodeVar.get();
+  if (!dialCode) return;
 
   if (dialCode.indexOf('+') === -1) dialCode = '+' + dialCode;
 
-  return (excludeDialCode) ? phoneNumber : dialCode + phoneNumber;
+  return dialCode;
+};
+
+Template.InternationalPhoneInput.phoneNumber = function (newPhoneNumber) {
+  if (newPhoneNumber) $('.phone-number').val(newPhoneNumber).trigger('input');
+
+  var phoneNumber = $('.phone-number').val();
+
+  phoneNumber = Phone.cleanPhone(phoneNumber);
+
+  return phoneNumber;
+};
+
+Template.InternationalPhoneInput.value = function () {
+  var dialCode = Template.InternationalPhoneInput.dialCode();
+  var phoneNumber = Template.InternationalPhoneInput.phoneNumber();
+
+  return dialCode + phoneNumber;
 };

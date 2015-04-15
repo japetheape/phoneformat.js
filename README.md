@@ -41,9 +41,20 @@ This provides a template for a split input field for both an international dial 
 // Ex. +15555555555
 Template.InternationalPhoneInput.value();
 
+// Get just the value of the dial code input
+// Ex. +1
+Template.InternationalPhoneInput.dialCode();
+
 // Get just the value of the phone number input
 // Ex. 5555555555
-Template.InternationalPhoneInput.value(true);
+Template.InternationalPhoneInput.phoneNumber();
+
+// Set the value of the dial code input
+Template.InternationalPhoneInput.dialCode('+1');
+
+// Set the value of the phone number input
+// Ex. 5555555555
+Template.InternationalPhoneInput.phoneNumber('5555555555');
 ```
 
 <br>

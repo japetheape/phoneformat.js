@@ -684,3 +684,11 @@ Phone.dialCodeToName = function (dialCode) {
   var name = dialCodeToNameArr[dialCode];
   return name || '';
 };
+
+/*
+ * Return an object of country names and their dial codes and country codes.
+ * @return {Object}
+ */
+Phone.countryList = function () {
+  return COUNTRY_CODE_MAP;
+};

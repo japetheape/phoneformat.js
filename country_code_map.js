@@ -1,5 +1,4 @@
 COUNTRY_CODE_MAP = {
-  "Israel": {dial_code:"+972",code:"IL"},
   "Afghanistan": {dial_code:"+93",code:"AF"},
   "Albania": {dial_code:"+355",code:"AL"},
   "Algeria": {dial_code:"+213",code:"DZ"},
