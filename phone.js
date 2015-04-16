@@ -128,9 +128,9 @@ Phone.formatLocal = function (country, phone) {
       return output.toString();
     }
 
-    return formatInternational(country, phone);
+    return Phone.formatInternational(country, phone);
   } catch (e) {
-    return formatInternational(country, phone);
+    return Phone.formatInternational(country, phone);
   }
 };
 
