@@ -1,12 +1,12 @@
 <template name="InternationalPhoneInput">
-  <div class="inputs {{class}}">
+  <div class="intlPhone-inputContainer {{class}}">
     <input
-      class="dial-code"
+      class="intlPhone-dialCode"
       autocomplete="off"
       value="{{dialCode}}"
-      maxlength="4" >
-    <input
-      class="phone-number"
+      maxlength="4"
+      ><input
+      class="intlPhone-phoneNumber"
       autocomplete="off"
       placeholder="{{#if placeholder}}{{placeholder}}{{else}}{{exampleCountryNumber}}{{/if}}"
       type="tel" >

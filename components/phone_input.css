@@ -1,4 +1,4 @@
-.dial-code, .phone-number {
+.intlPhone-dialCode, .intlPhone-phoneNumber {
   display: inline-block;
   vertical-align: top;
   border: none;
@@ -7,20 +7,29 @@
   float: left;
 }
 
-.inputs {
+.intlPhone-inputContainer {
   background: #FFF;
   padding: 10px 0;
 }
 
-.dial-code {
+.intlPhone-dialCode {
+  max-width: 25%;
   padding: 0 10px 0 0;
-  width: 25%;
   text-align: right;
 }
 
-.phone-number {
+.intlPhone-phoneNumber {
+  max-width: 75%;
   border-left: 1px solid #CDCDCD;
   padding: 0 0 0 10px;
-  width: 75%;
 }
 
+::-webkit-input-placeholder {
+  line-height: 1.4;
+}
+::-moz-placeholder {
+  line-height: 1.4;
+}
+:-ms-input-placeholder {
+  line-height: 1.4;
+}
