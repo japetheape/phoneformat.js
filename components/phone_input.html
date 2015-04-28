@@ -1,14 +1,27 @@
 <template name="InternationalPhoneInput">
-  <div class="intlPhone-inputContainer {{containerClass}}">
+  {{#unless noContainer}}
+    <div class="intlPhone-inputContainer {{containerClass}}">
+  {{/unless}}
+  
     <input
-      class="intlPhone-dialCode {{inputClass}}"
+      class="{{inputClass}} intlPhone-dialCode"
       autocomplete="off"
+      name="dialCode"
       value="{{dialCode}}"
-      maxlength="4"
-      ><input
-      class="intlPhone-phoneNumber {{inputClass}}"
+      maxlength="4" />
+
+    {{#if showSeparator}}
+      <div class="intlPhone-separator separator"></div>
+    {{/if}}
+
+    <input
+      class="{{inputClass}} intlPhone-phoneNumber"
       autocomplete="off"
       placeholder="{{#if placeholder}}{{placeholder}}{{else}}{{exampleCountryNumber}}{{/if}}"
-      type="tel" >
-  </div>
+      name="phoneNumber"
+      type="tel" />
+
+  {{#unless noContainer}}
+    </div>
+  {{/unless}}
 </template>
