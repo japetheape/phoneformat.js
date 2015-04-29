@@ -1,7 +1,7 @@
 Package.describe({
   name: 'dispatch:phoneformat.js',
   summary: 'phoneformat.js packaged for meteor',
-  version: '1.1.1',
+  version: '1.1.3',
   git: 'https://github.com/DispatchMe/phoneformat.js.git',
 });
 
