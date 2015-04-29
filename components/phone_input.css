@@ -1,18 +1,11 @@
-.intlPhone-dialCode, .intlPhone-phoneNumber {
+.intlPhone-dialCode,
+.intlPhone-phoneNumber,
+.intlPhone-separator {
   display: inline-block;
-  vertical-align: top;
+  vertical-align: middle;
   border: none;
   outline: none;
   height: 100%;
   float: left;
-}
-
-::-webkit-input-placeholder {
-  line-height: 1.4;
-}
-::-moz-placeholder {
-  line-height: 1.4;
-}
-:-ms-input-placeholder {
-  line-height: 1.4;
+  text-align: right;
 }
