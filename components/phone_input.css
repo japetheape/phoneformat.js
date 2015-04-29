@@ -7,23 +7,6 @@
   float: left;
 }
 
-.intlPhone-inputContainer {
-  background: #FFF;
-  padding: 10px 0;
-}
-
-.intlPhone-inputContainer > .intlPhone-dialCode {
-  max-width: 25%;
-  padding: 0 10px 0 0;
-  text-align: right;
-}
-
-.intlPhone-inputContainer > .intlPhone-phoneNumber {
-  max-width: 75%;
-  border-left: 1px solid #CDCDCD;
-  padding: 0 0 0 10px;
-}
-
 ::-webkit-input-placeholder {
   line-height: 1.4;
 }
