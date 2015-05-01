@@ -1,27 +1,28 @@
-Phone = {};
+Phoneformat = {};
 
 // Get the user's current country based on the user's ip address
-Phone._getCountryForIp = function (callback) {
-  var country = localStorage.getItem('phoneformat.current_country');
+Phoneformat._getCountryForIp = function (callback) {
+  // Return cached country if it exists.
+  var storedCountry = localStorage.getItem('phoneformat.current_country');
+  if (storedCountry) return callback && callback(storedCountry);
 
-  if (country) return callback && callback(country);
+  // Otherwise, get the country from the user's IP and store it.
+  Meteor.call('phoneformat.getCountryForIp', function (error, country) {
+    if (!country) return callback && callback('US');
 
-  $.get('http://ipinfo.io', function (result) {
-    if (!result) return callback && callback('US');
+    localStorage.setItem('phoneformat.current_country', country);
 
-    localStorage.setItem('phoneformat.current_country', result.country);
-
-    callback && callback(result.country);
-  }, 'jsonp');
+    callback && callback(country);
+  });
 };
 
 /*
  * Return the country code for an e164 formatted number.
  * @param {String} phone The number in e164 format.
  */
-Phone.countryForE164Number = function (phone) {
+Phoneformat.countryForE164Number = function (phone) {
   try {
-    var phone = Phone.cleanPhone(phone);
+    var phone = Phoneformat.cleanPhone(phone);
     var phoneUtil = i18n.phonenumbers.PhoneNumberUtil.getInstance();
     var number = phoneUtil.parseAndKeepRawInput(phone);
     var output = new goog.string.StringBuffer();
@@ -40,9 +41,9 @@ Phone.countryForE164Number = function (phone) {
  * @param {String} country The two digit country code.
  * @param {String} phone The number to format
  */
-Phone.formatNumberForMobileDialing = function (country, phone) {
+Phoneformat.formatNumberForMobileDialing = function (country, phone) {
   try {
-    var phone = Phone.cleanPhone(phone);
+    var phone = Phoneformat.cleanPhone(phone);
     var phoneUtil = i18n.phonenumbers.PhoneNumberUtil.getInstance();
     var number = phoneUtil.parseAndKeepRawInput(phone, country);
     var output = new goog.string.StringBuffer();
@@ -58,9 +59,9 @@ Phone.formatNumberForMobileDialing = function (country, phone) {
  * @param {String} phone
  * @param {String} country The two digit country code.
  */
-Phone.isValidNumber = function (phone, country) {
+Phoneformat.isValidNumber = function (phone, country) {
   try {
-    var phone = Phone.cleanPhone(phone);
+    var phone = Phoneformat.cleanPhone(phone);
     var phoneUtil = i18n.phonenumbers.PhoneNumberUtil.getInstance();
     var number = phoneUtil.parseAndKeepRawInput(phone, country);
     return phoneUtil.isValidNumber(number);
@@ -74,9 +75,9 @@ Phone.isValidNumber = function (phone, country) {
  * @param {String} country The two digit country code.
  * @param {String} phone The number to format
  */
-Phone.formatE164 = function (country, phone) {
+Phoneformat.formatE164 = function (country, phone) {
   try {
-    var phone = Phone.cleanPhone(phone);
+    var phone = Phoneformat.cleanPhone(phone);
     var phoneUtil = i18n.phonenumbers.PhoneNumberUtil.getInstance();
     var number = phoneUtil.parseAndKeepRawInput(phone, country);
     var PNF = i18n.phonenumbers.PhoneNumberFormat;
@@ -93,9 +94,9 @@ Phone.formatE164 = function (country, phone) {
  * @param {String} country The two digit country code.
  * @param {String} phone The number to format
  */
-Phone.formatInternational = function (country, phone) {
+Phoneformat.formatInternational = function (country, phone) {
   try {
-    var phone = Phone.cleanPhone(phone);
+    var phone = Phoneformat.cleanPhone(phone);
     var formatter = new i18n.phonenumbers.AsYouTypeFormatter(country);
     var output = new goog.string.StringBuffer();
 
@@ -115,9 +116,9 @@ Phone.formatInternational = function (country, phone) {
  * @param {String} country The two digit country code.
  * @param {String} phone The number to format
  */
-Phone.formatLocal = function (country, phone) {
+Phoneformat.formatLocal = function (country, phone) {
   try {
-    var phone = Phone.cleanPhone(phone);
+    var phone = Phoneformat.cleanPhone(phone);
     var phoneUtil = i18n.phonenumbers.PhoneNumberUtil.getInstance();
     var number = phoneUtil.parseAndKeepRawInput(phone, country);
 
@@ -128,9 +129,9 @@ Phone.formatLocal = function (country, phone) {
       return output.toString();
     }
 
-    return Phone.formatInternational(country, phone);
+    return Phoneformat.formatInternational(country, phone);
   } catch (e) {
-    return Phone.formatInternational(country, phone);
+    return Phoneformat.formatInternational(country, phone);
   }
 };
 
@@ -138,7 +139,7 @@ Phone.formatLocal = function (country, phone) {
  * Returns an example land line phone number for the specified country.
  * @param {String} country The two digit country code.
  */
-Phone.exampleLandlineNumber = function (country) {
+Phoneformat.exampleLandlineNumber = function (country) {
   try {
     var phoneUtil = i18n.phonenumbers.PhoneNumberUtil.getInstance();
     var output = phoneUtil.getExampleNumber(country);
@@ -152,7 +153,7 @@ Phone.exampleLandlineNumber = function (country) {
  * Returns an example mobile phone number for the specified country.
  * @param {String} country The two digit country code.
  */
-Phone.exampleMobileNumber = function (country) {
+Phoneformat.exampleMobileNumber = function (country) {
   try {
     var phoneUtil = i18n.phonenumbers.PhoneNumberUtil.getInstance();
     var output = phoneUtil.getExampleNumberForType(country, i18n.phonenumbers.PhoneNumberType.MOBILE);
@@ -167,7 +168,7 @@ Phone.exampleMobileNumber = function (country) {
  * but leave any plus sign at the beginning.
  * @param {String} phone
  */
-Phone.cleanPhone = function (phone) {
+Phoneformat.cleanPhone = function (phone) {
   phone = phone.replace(/[^\d\+]/g,'');
 
   if (phone.substring(0, 1) == "+") {
@@ -427,7 +428,7 @@ countryCodeToNameArr['VI'] = "Virgin Islands, U.S.";
  * Convert the country code to a name.
  * @param {String} country The two digit country code.
  */
-Phone.countryCodeToName = function (countryCode) {
+Phoneformat.countryCodeToName = function (countryCode) {
   if (!countryCode) return '';
 
   var name = countryCodeToNameArr[countryCode.toUpperCase()];
@@ -680,7 +681,7 @@ dialCodeToNameArr['+1340'] = "Virgin Islands, U.S.";
  * Convert the dial code to a name.
  * @param {String} dialCode Dial code for a country starting with '+'
  */
-Phone.dialCodeToName = function (dialCode) {
+Phoneformat.dialCodeToName = function (dialCode) {
   var name = dialCodeToNameArr[dialCode];
   return name || '';
 };
@@ -689,6 +690,6 @@ Phone.dialCodeToName = function (dialCode) {
  * Return an object of country names and their dial codes and country codes.
  * @return {Object}
  */
-Phone.countryList = function () {
+Phoneformat.countryList = function () {
   return COUNTRY_CODE_MAP;
 };
