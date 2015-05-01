@@ -1,4 +1,8 @@
 Meteor.methods({
+  /*
+   * Get the country of the client.
+   * @return country The country which the IP address of the client is in.
+   */
   'phoneformat.getCountryForIp': function () {
     var response = null;
 
