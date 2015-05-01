@@ -8,25 +8,25 @@ Javascript phone number formatter for meteor.
 
 ```
 // Returns: +18646978257
-Phone.formatE164('US', '8646978257');
+Phoneformat.formatE164('US', '8646978257');
 
 // Returns: US
-Phone.countryForE164Number('+18646978257');
+Phoneformat.countryForE164Number('+18646978257');
 
 // Returns: +1 (864) 697-8257
-Phone.formatInternational('US', '8646978257');
+Phoneformat.formatInternational('US', '8646978257');
 
 // Returns: (864) 697-8257
-Phone.formatLocal('US', '8646978257');
+Phoneformat.formatLocal('US', '8646978257');
 
 // Returns: United States
-Phone.countryCodeToName('US');
+Phoneformat.countryCodeToName('US');
 
 // Returns: United States
-Phone.dialCodeToName('+1');
+Phoneformat.dialCodeToName('+1');
 
 // Returns: +18646978257
-Phone.cleanPhone('+1 (864) 697-8257');
+Phoneformat.cleanPhone('+1 (864) 697-8257');
 ```
 
 <br>

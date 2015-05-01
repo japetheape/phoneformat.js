@@ -17,5 +17,9 @@ Package.onUse(function (api) {
     'components/phone_input.html', 'components/phone_input.css', 'components/phone_input.js'
   ], 'web');
 
-  api.export('Phone', 'web');
+  api.use(['http'], 'server');
+
+  api.addFiles('server.js', 'server');
+
+  api.export('Phoneformat');
 });

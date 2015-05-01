@@ -9,8 +9,8 @@ Template.InternationalPhoneInput.helpers({
     var country = countryCodeVar.get();
     if (!country) return '';
 
-    var exampleNumber = Phone.exampleMobileNumber(country);
-    var intlNumber = Phone.formatInternational(country, exampleNumber);
+    var exampleNumber = Phoneformat.exampleMobileNumber(country);
+    var intlNumber = Phoneformat.formatInternational(country, exampleNumber);
 
     return intlNumber.replace(/[0-9]/g, 'X');
   }
@@ -25,7 +25,7 @@ Template.InternationalPhoneInput.events({
 
     dialCodeVar.set(currentValue);
 
-    var country = COUNTRY_CODE_MAP[Phone.dialCodeToName(currentValue)];
+    var country = COUNTRY_CODE_MAP[Phoneformat.dialCodeToName(currentValue)];
     if (!country) return;
 
     // Update country code var if a country exists for the current dial code
@@ -39,23 +39,23 @@ Template.InternationalPhoneInput.events({
 
     var country = countryCodeVar.get();
 
-    var exampleNumber = Phone.exampleMobileNumber(country);
-    var cleanPhone = Phone.cleanPhone(currentValue);
+    var exampleNumber = Phoneformat.exampleMobileNumber(country);
+    var cleanPhone = Phoneformat.cleanPhone(currentValue);
 
     // Limit the length of a phone number to the length of an example number from that country
     if (cleanPhone.length > exampleNumber.length) {
       currentValue = cleanPhone.substring(0, exampleNumber.length);
     }
 
-    event.currentTarget.value = Phone.formatInternational(country, currentValue);
+    event.currentTarget.value = Phoneformat.formatInternational(country, currentValue);
   }
 });
 
 Template.InternationalPhoneInput.created = function () {
-  Phone._getCountryForIp(function (countryCode) {
+  Phoneformat._getCountryForIp(function (countryCode) {
     countryCodeVar.set(countryCode);
 
-    var countryName = Phone.countryCodeToName(countryCode);
+    var countryName = Phoneformat.countryCodeToName(countryCode);
 
     var countryInfo = COUNTRY_CODE_MAP[countryName];
     dialCodeVar.set(countryInfo.dial_code);
@@ -83,7 +83,7 @@ Template.InternationalPhoneInput.phoneNumber = function (newPhoneNumber) {
 
   var phoneNumber = $('.intlPhone-phoneNumber').val();
 
-  phoneNumber = Phone.cleanPhone(phoneNumber);
+  phoneNumber = Phoneformat.cleanPhone(phoneNumber);
 
   return phoneNumber;
 };
