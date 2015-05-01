@@ -1,7 +1,7 @@
 Package.describe({
   name: 'dispatch:phoneformat.js',
   summary: 'phoneformat.js packaged for meteor',
-  version: '1.1.4',
+  version: '1.2.0',
   git: 'https://github.com/DispatchMe/phoneformat.js.git',
 });
 
@@ -17,7 +17,9 @@ Package.onUse(function (api) {
     'components/phone_input.html', 'components/phone_input.css', 'components/phone_input.js'
   ], 'web');
 
-  api.use(['http'], 'server');
+  api.use([
+    'http@1.1.0'
+  ], 'server');
 
   api.addFiles('server.js', 'server');
 
