@@ -17,7 +17,7 @@ Template.InternationalPhoneInput.helpers({
 });
 
 Template.InternationalPhoneInput.events({
-  'input .intlPhone-dialCode': function (event) {
+  'input .js-intlPhone--dialCode': function (event) {
     var currentValue = event.currentTarget.value;
 
     // Ensure that the dial code starts with a '+'
@@ -32,9 +32,9 @@ Template.InternationalPhoneInput.events({
     countryCodeVar.set(country.code);
 
     // Trigger phone number input to apply formatting to current phone number
-    $('.intlPhone-phoneNumber').trigger('input');
+    $('.js-intlPhone--phoneNumber').trigger('input');
   },
-  'input .intlPhone-phoneNumber': function (event) {
+  'input .js-intlPhone--phoneNumber': function (event) {
     var currentValue = event.currentTarget.value;
 
     var country = countryCodeVar.get();
@@ -65,7 +65,9 @@ Template.InternationalPhoneInput.created = function () {
 Template.InternationalPhoneInput.dialCode = function (newDialCode) {
   // Set the dial code input value and trigger the input event
   // to apply the correct mask to the phone number input
-  if (newDialCode) $('.intlPhone-dialCode').val(newDialCode).trigger('input');
+  if (newDialCode) {
+    $('.js-intlPhone--dialCode').val(newDialCode).trigger('input');
+  }
 
   var dialCode = dialCodeVar.get();
   if (!dialCode) return;
@@ -78,10 +80,10 @@ Template.InternationalPhoneInput.dialCode = function (newDialCode) {
 Template.InternationalPhoneInput.phoneNumber = function (newPhoneNumber) {
   // Set the phone number input value and trigger the input event to apply the correct mask
   if (newPhoneNumber) {
-    $('.intlPhone-phoneNumber').val(newPhoneNumber).trigger('input');
+    $('.js-intlPhone--phoneNumber').val(newPhoneNumber).trigger('input');
   }
 
-  var phoneNumber = $('.intlPhone-phoneNumber').val();
+  var phoneNumber = $('.js-intlPhone--phoneNumber').val();
 
   phoneNumber = Phoneformat.cleanPhone(phoneNumber);
 
