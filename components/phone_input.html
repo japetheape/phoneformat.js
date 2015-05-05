@@ -1,6 +1,6 @@
 <template name="InternationalPhoneInput">  
     <input
-      class="{{inputClass}} intlPhone-dialCode"
+      class="{{inputClass}} intlPhone-dialCode js-intlPhone--dialCode"
       autocomplete="off"
       name="dialCode"
       value="{{dialCode}}"
@@ -11,7 +11,7 @@
     {{/if}}
 
     <input
-      class="{{inputClass}} intlPhone-phoneNumber"
+      class="{{inputClass}} intlPhone-phoneNumber js-intlPhone--phoneNumber"
       autocomplete="off"
       placeholder="{{#if placeholder}}{{placeholder}}{{else}}{{exampleCountryNumber}}{{/if}}"
       name="phoneNumber"
