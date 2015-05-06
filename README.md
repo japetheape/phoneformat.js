@@ -25,6 +25,9 @@ Phoneformat.countryCodeToName('US');
 // Returns: United States
 Phoneformat.dialCodeToName('+1');
 
+// Returns: +1
+Phoneformat.countryCodeToDialCode('US');
+
 // Returns: +18646978257
 Phoneformat.cleanPhone('+1 (864) 697-8257');
 ```
