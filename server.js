@@ -9,6 +9,10 @@ Meteor.methods({
     // Lookup info for the client's IP address, not the server's
     var clientIP = this.connection.clientAddress;
 
+    // For local development, client connections are the client's local IP address.
+    // Do not pass in an IP address and the lookup will be based on the server's address.
+    clientIP = (clientIP === '127.0.0.1') ? '' : clientIP;
+
     // If phoneformat is configured with a token, do the look up over https
     if (Phoneformat.token) {
       response = HTTP.get('https://ipinfo.io/' + clientIP + '?token=' + Phoneformat.token);
