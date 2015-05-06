@@ -55,10 +55,8 @@ Template.InternationalPhoneInput.created = function () {
   Phoneformat._getCountryForIp(function (countryCode) {
     countryCodeVar.set(countryCode);
 
-    var countryName = Phoneformat.countryCodeToName(countryCode);
-
-    var countryInfo = COUNTRY_CODE_MAP[countryName];
-    dialCodeVar.set(countryInfo.dial_code);
+    var dialCode = Phoneformat.countryCodeToDialCode(countryCode);
+    dialCodeVar.set(dialCode);
   });
 };
 
