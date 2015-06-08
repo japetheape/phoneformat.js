@@ -1,5 +1,5 @@
-var countryCodeVar = new ReactiveVar();
-var dialCodeVar = new ReactiveVar();
+var countryCodeVar = new ReactiveVar('US');
+var dialCodeVar = new ReactiveVar('+1');
 
 Template.InternationalPhoneInput.helpers({
   dialCode: function () {
@@ -43,9 +43,7 @@ Template.InternationalPhoneInput.events({
     var cleanPhone = Phoneformat.cleanPhone(currentValue);
 
     // Limit the length of a phone number to the length of an example number from that country
-    if (cleanPhone.length > exampleNumber.length) {
-      currentValue = cleanPhone.substring(0, exampleNumber.length);
-    }
+    if (cleanPhone.length > exampleNumber.length) currentValue = cleanPhone.substring(0, exampleNumber.length);
 
     event.currentTarget.value = Phoneformat.formatInternational(country, currentValue);
   }
@@ -63,9 +61,7 @@ Template.InternationalPhoneInput.created = function () {
 Template.InternationalPhoneInput.dialCode = function (newDialCode) {
   // Set the dial code input value and trigger the input event
   // to apply the correct mask to the phone number input
-  if (newDialCode) {
-    $('.js-intlPhone--dialCode').val(newDialCode).trigger('input');
-  }
+  if (newDialCode) $('.js-intlPhone--dialCode').val(newDialCode).trigger('input');
 
   var dialCode = dialCodeVar.get();
   if (!dialCode) return;
@@ -77,9 +73,7 @@ Template.InternationalPhoneInput.dialCode = function (newDialCode) {
 
 Template.InternationalPhoneInput.phoneNumber = function (newPhoneNumber) {
   // Set the phone number input value and trigger the input event to apply the correct mask
-  if (newPhoneNumber) {
-    $('.js-intlPhone--phoneNumber').val(newPhoneNumber).trigger('input');
-  }
+  if (newPhoneNumber) $('.js-intlPhone--phoneNumber').val(newPhoneNumber).trigger('input');
 
   var phoneNumber = $('.js-intlPhone--phoneNumber').val();
 
