@@ -1,12 +1,7 @@
 Phoneformat = {};
 
-// Get the user's current country based on the user's ip address
-Phoneformat._getCountryForIp = function (callback) {
-  // Return cached country if it exists.
-  var storedCountry = localStorage.getItem('phoneformat.current_country');
-  if (storedCountry) return callback && callback(storedCountry);
-
-  // Otherwise, get the country from the user's IP and store it.
+// Look up the user's current country based on the user's ip address
+var lookupCountryForIp = function (callback) {
   Meteor.call('phoneformat.getCountryForIp', function (error, country) {
     if (!country) return callback && callback('US');
 
@@ -14,6 +9,34 @@ Phoneformat._getCountryForIp = function (callback) {
 
     callback && callback(country);
   });
+};
+
+// Get the user's current country
+Phoneformat._getCountryForIp = function (callback) {
+  // Return cached country if it exists.
+  var storedCountry = localStorage.getItem('phoneformat.current_country');
+  if (storedCountry) return callback && callback(storedCountry);
+
+  // If the user is on a mobile device, attempt to get the country from the phone.
+  if (Meteor.isCordova) {
+    navigator.globalization.getLocaleName(function (locale) {
+      // The locale is given as a language and then two digit country code
+      // Ex. en-US
+      var localeValue = locale.value;
+      var country = localeValue.substr(localeValue.indexOf('-') + 1, 2);
+
+      localStorage.setItem('phoneformat.current_country', country);
+
+      callback && callback(country);
+    }, function (error) {
+      // If the locale cannot be found, get the country from the user's IP and store it.
+      lookupCountryForIp(callback);
+    });
+    return;
+  }
+
+  // Otherwise, get the country from the user's IP and store it.
+  lookupCountryForIp(callback);
 };
 
 /*

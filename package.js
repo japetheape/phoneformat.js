@@ -25,3 +25,7 @@ Package.onUse(function (api) {
 
   api.export('Phoneformat');
 });
+
+Cordova.depends({
+  'org.apache.cordova.globalization': '0.3.4'
+});
