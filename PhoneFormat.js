@@ -18,7 +18,7 @@ Phoneformat._getCountryForIp = function (callback) {
   if (storedCountry) return callback && callback(storedCountry);
 
   // If the user is on a mobile device, attempt to get the country from the phone.
-  if (Meteor.isCordova) {
+  if (Meteor.isCordova && navigator.globalization) {
     navigator.globalization.getLocaleName(function (locale) {
       // The locale is given as a language and then two digit country code
       // Ex. en-US
