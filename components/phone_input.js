@@ -18,6 +18,7 @@ PhoneInput = function (id, options) {
 
   self.type = options.type || 'single';
   self.storeInput = options.storeInput || false;
+  self.hideDialCode = self.type === 'single' && options.hideDialCode;
 
   self.countryCode = new ReactiveVar(options.countryCode);
   self.dialCode = new ReactiveVar();
@@ -110,12 +111,32 @@ PhoneInput.prototype.setValue = function (newValue) {
 };
 
 PhoneInput.prototype.maxLength = function () {
+  // Limit the length of a phone number to the length of an example number from that country.
   var countryCode = this.getCountryCode()
   var exampleNumber = Phoneformat.exampleMobileNumber(countryCode);
+  var formattedNumber = Phoneformat.formatInternational(countryCode, exampleNumber);
 
-  // Limit the length of a phone number to the length of an example number from that country.
-  return Phoneformat.formatInternational(countryCode, exampleNumber).length;
+  // Multi inputs only limit the phone number input length to the length of the formatted number.
+  if (this.type === 'multi' || this.hideDialCode) return formattedNumber.length;
+
+  // Single inputs must also include the dial code and the space between the dial code and phone number.
+  var dialCode = this.getDialCode();
+  return dialCode.length + formattedNumber.length + 1;
 };
+
+Template.InternationalPhoneSingleInput.onCreated(function () {
+  var options = _.extend({}, this.data, { type: 'single' });
+  var input = PhoneInput(this.data.id, options);
+
+  // Append the template view to the input object
+  input.view = this.view;
+
+  // If store input is set to true, update the input value with the stored value.
+  if (input.storeInput) {
+    var storedValue = localStorage.getItem('phoneformat.inputs.' + this.data.id);
+    input.setValue(storedValue);
+  }
+});
 
 Template.InternationalPhoneMultiInput.onCreated(function () {
   var options = _.extend({}, this.data, { type: 'multi' });
@@ -124,6 +145,7 @@ Template.InternationalPhoneMultiInput.onCreated(function () {
   // Append the template view to the input object
   input.view = this.view;
 
+  // If store input is set to true, update the input value with the stored value.
   if (input.storeInput) {
     var storedValue = localStorage.getItem('phoneformat.inputs.' + this.data.id);
     input.setValue(storedValue);

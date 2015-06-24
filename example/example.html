@@ -7,6 +7,16 @@
 </body>
 
 <template name="example">
+  <h3>Single international input</h3>
+
+  {{> InternationalPhoneSingleInput id="testSingle1" hideDialCode=true}}
+
+  <br>
+
+  {{> InternationalPhoneSingleInput id="testSingle2"}}
+
+  <br>
+
   <h3>Multi international input</h3>
 
   <select class="js-countrySelector1">
@@ -18,7 +28,7 @@
 
   <br>
 
-  {{> InternationalPhoneMultiInput id="testMulti1" class="multi-input"}}
+  {{> InternationalPhoneMultiInput id="testMulti1"}}
 
   <br>
   <br>
@@ -32,5 +42,5 @@
 
   <br>
 
-  {{> InternationalPhoneMultiInput id="testMulti2" class="multi-input"}}
+  {{> InternationalPhoneMultiInput id="testMulti2"}}
 </template>
