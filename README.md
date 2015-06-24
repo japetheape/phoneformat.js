@@ -35,29 +35,25 @@ Phoneformat.cleanPhone('+1 (864) 697-8257');
 <br>
 
 ##Template
-`{{> InternationalPhoneInput}}`
+`{{> InternationalPhoneMultiInput id='example'}}`
 
 This provides a template for a split input field for both an international dial code and the national phone format.
 
 ```
 // The value from the dial code and phone number inputs
 // Ex. +15555555555
-Template.InternationalPhoneInput.value();
+PhoneInput('example').getValue();
 
 // The dial code input value
 // Ex. +1
-Template.InternationalPhoneInput.dialCode();
+PhoneInput('example').getDialCode();
 
 // The phone number input value
 // Ex. 5555555555
-Template.InternationalPhoneInput.phoneNumber();
+PhoneInput('example').getPhoneNumber();
 
-// Set the dial code input value
-Template.InternationalPhoneInput.dialCode('+1');
-
-// Set the phone number input value
-// Ex. 5555555555
-Template.InternationalPhoneInput.phoneNumber('5555555555');
+// Listen to changes on the input
+PhoneInput('example').on('change', function (change) {});
 ```
 
 <br>

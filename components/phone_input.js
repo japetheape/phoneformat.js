@@ -1,90 +1,131 @@
-var countryCodeVar = new ReactiveVar('US');
-var dialCodeVar = new ReactiveVar('+1');
+var _phoneInputs = {};
 
-Template.InternationalPhoneInput.helpers({
-  dialCode: function () {
-    return dialCodeVar.get();
-  },
-  exampleCountryNumber: function () {
-    var country = countryCodeVar.get();
-    if (!country) return '';
+PhoneInput = function (id, options) {
+  if (!id) throw new Meteor.Error('Please specify an id for the phone input');
 
-    var exampleNumber = Phoneformat.exampleMobileNumber(country);
-    var intlNumber = Phoneformat.formatInternational(country, exampleNumber);
+  var self = this;
 
-    return intlNumber.replace(/[0-9]/g, 'X');
+  if (_phoneInputs[id]) return _phoneInputs[id];
+
+  if (!(self instanceof PhoneInput)) return new PhoneInput(id, options);
+
+  // Set up an event emitter for tracking changes.
+  self._emitter = new EventEmitter();
+  self.emit = self._emitter.emit.bind(self._emitter);
+  self.on = self._emitter.on.bind(self._emitter);
+
+  options = options || {};
+
+  self.type = options.type || 'single';
+  self.storeInput = options.storeInput || false;
+
+  self.countryCode = new ReactiveVar(options.countryCode);
+  self.dialCode = new ReactiveVar();
+  self.phoneNumber = new ReactiveVar();
+
+  _phoneInputs[id] = self;
+
+  // If storeInput is true, listen for changes and store them in local storage.
+  if (self.storeInput) {
+    self.on('change', function () {
+      localStorage.setItem('phoneformat.inputs.' + id, self.getValue());
+    });
+  }
+
+  // Set the country code based on the user's IP address if it was not specified in the options.
+  if (!self.countryCode.get()) {
+    Phoneformat._getCountryForIp(function (countryCode) {
+      self.setCountryCode(countryCode);
+    });
+  }
+};
+
+PhoneInput.prototype.getCountryCode = function () {
+  return this.countryCode.get();
+};
+
+PhoneInput.prototype.setCountryCode = function (countryCode) {
+  if (!countryCode) return;
+
+  var prevCountryCode = this.countryCode.get();
+
+  this.countryCode.set(countryCode);
+
+  // Emit a change event if the country code exists and is being changed.
+  if (prevCountryCode && prevCountryCode !== countryCode) {
+    this.emit('change', { countryCode: countryCode });
+  }
+
+  var dialCode = Phoneformat.countryCodeToDialCode(countryCode);
+  this.setDialCode(dialCode);
+};
+
+PhoneInput.prototype.getDialCode = function () {
+  return this.dialCode.get();
+};
+
+PhoneInput.prototype.setDialCode = function (dialCode) {
+  var prevDialCode = this.dialCode.get();
+
+  this.dialCode.set(dialCode);
+
+  // Emit a change event if the dial code exists and is being changed.
+  if (prevDialCode && prevDialCode !== dialCode) {
+    this.emit('change', { dialCode: dialCode });
+  }
+};
+
+PhoneInput.prototype.getPhoneNumber = function () {
+  return this.phoneNumber.get();
+};
+
+PhoneInput.prototype.setPhoneNumber = function (phoneNumber) {
+  var prevPhoneNumber = this.phoneNumber.get();
+
+  this.phoneNumber.set(phoneNumber);
+
+  // Emit a change event if the phone number exists and is being changed.
+  if (prevPhoneNumber && prevPhoneNumber !== phoneNumber) {
+    this.emit('change', { phoneNumber: phoneNumber });
+  }
+};
+
+PhoneInput.prototype.getValue = function () {
+  var dialCode = this.getDialCode();
+  var phoneNumber = this.getPhoneNumber();
+
+  // Remove all special characters except for '+'.
+  return Phoneformat.cleanPhone(dialCode + phoneNumber);
+};
+
+PhoneInput.prototype.setValue = function (newValue) {
+  if (!newValue) return;
+
+  var newDialCode = Phoneformat.phoneNumberToDialCode(newValue);
+  var newCountryCode = Phoneformat.dialCodeToCountryCode(newDialCode);
+  this.setCountryCode(newCountryCode);
+
+  var newPhoneNumber = newValue.substring(newDialCode.length);
+  this.setPhoneNumber(newPhoneNumber);
+};
+
+PhoneInput.prototype.maxLength = function () {
+  var countryCode = this.getCountryCode()
+  var exampleNumber = Phoneformat.exampleMobileNumber(countryCode);
+
+  // Limit the length of a phone number to the length of an example number from that country.
+  return Phoneformat.formatInternational(countryCode, exampleNumber).length;
+};
+
+Template.InternationalPhoneMultiInput.onCreated(function () {
+  var options = _.extend({}, this.data, { type: 'multi' });
+  var input = PhoneInput(this.data.id, options);
+
+  // Append the template view to the input object
+  input.view = this.view;
+
+  if (input.storeInput) {
+    var storedValue = localStorage.getItem('phoneformat.inputs.' + this.data.id);
+    input.setValue(storedValue);
   }
 });
-
-Template.InternationalPhoneInput.events({
-  'input .js-intlPhone--dialCode': function (event) {
-    var currentValue = event.currentTarget.value;
-
-    // Ensure that the dial code starts with a '+'
-    if (currentValue.substring(0, 1) !== '+') currentValue = '+' + currentValue;
-
-    dialCodeVar.set(currentValue);
-
-    var country = COUNTRY_CODE_MAP[Phoneformat.dialCodeToName(currentValue)];
-    if (!country) return;
-
-    // Update country code var if a country exists for the current dial code
-    countryCodeVar.set(country.code);
-
-    // Trigger phone number input to apply formatting to current phone number
-    $('.js-intlPhone--phoneNumber').trigger('input');
-  },
-  'input .js-intlPhone--phoneNumber': function (event) {
-    var currentValue = event.currentTarget.value;
-
-    var country = countryCodeVar.get();
-
-    var exampleNumber = Phoneformat.exampleMobileNumber(country);
-    var cleanPhone = Phoneformat.cleanPhone(currentValue);
-
-    // Limit the length of a phone number to the length of an example number from that country
-    if (cleanPhone.length > exampleNumber.length) currentValue = cleanPhone.substring(0, exampleNumber.length);
-
-    event.currentTarget.value = Phoneformat.formatInternational(country, currentValue);
-  }
-});
-
-Template.InternationalPhoneInput.created = function () {
-  Phoneformat._getCountryForIp(function (countryCode) {
-    countryCodeVar.set(countryCode);
-
-    var dialCode = Phoneformat.countryCodeToDialCode(countryCode);
-    dialCodeVar.set(dialCode);
-  });
-};
-
-Template.InternationalPhoneInput.dialCode = function (newDialCode) {
-  // Set the dial code input value and trigger the input event
-  // to apply the correct mask to the phone number input
-  if (newDialCode) $('.js-intlPhone--dialCode').val(newDialCode).trigger('input');
-
-  var dialCode = dialCodeVar.get();
-  if (!dialCode) return;
-
-  if (dialCode.indexOf('+') === -1) dialCode = '+' + dialCode;
-
-  return dialCode;
-};
-
-Template.InternationalPhoneInput.phoneNumber = function (newPhoneNumber) {
-  // Set the phone number input value and trigger the input event to apply the correct mask
-  if (newPhoneNumber) $('.js-intlPhone--phoneNumber').val(newPhoneNumber).trigger('input');
-
-  var phoneNumber = $('.js-intlPhone--phoneNumber').val();
-
-  phoneNumber = Phoneformat.cleanPhone(phoneNumber);
-
-  return phoneNumber;
-};
-
-Template.InternationalPhoneInput.value = function () {
-  var dialCode = Template.InternationalPhoneInput.dialCode();
-  var phoneNumber = Template.InternationalPhoneInput.phoneNumber();
-
-  return dialCode + phoneNumber;
-};
