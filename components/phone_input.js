@@ -1,3 +1,5 @@
+/* global PhoneInput:true */
+
 var _phoneInputs = {};
 
 PhoneInput = function (id, options) {
@@ -13,10 +15,11 @@ PhoneInput = function (id, options) {
   self._emitter = new EventEmitter();
   self.emit = self._emitter.emit.bind(self._emitter);
   self.on = self._emitter.on.bind(self._emitter);
+  self.removeListener = self._emitter.removeListener.bind(self._emitter);
 
   options = options || {};
 
-  self.type = options.type || 'single';
+  self.type = options.type;
   self.storeInput = options.storeInput || false;
   self.hideDialCode = self.type === 'single' && options.hideDialCode;
 
@@ -112,7 +115,7 @@ PhoneInput.prototype.setValue = function (newValue) {
 
 PhoneInput.prototype.maxLength = function () {
   // Limit the length of a phone number to the length of an example number from that country.
-  var countryCode = this.getCountryCode()
+  var countryCode = this.getCountryCode();
   var exampleNumber = Phoneformat.exampleMobileNumber(countryCode);
   var formattedNumber = Phoneformat.formatInternational(countryCode, exampleNumber);
 
@@ -121,7 +124,7 @@ PhoneInput.prototype.maxLength = function () {
 
   // Single inputs must also include the dial code and the space between the dial code and phone number.
   var dialCode = this.getDialCode();
-  return dialCode.length + formattedNumber.length + 1;
+  return (dialCode + ' ' + formattedNumber).length;
 };
 
 Template.InternationalPhoneSingleInput.onCreated(function () {
