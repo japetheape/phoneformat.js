@@ -203,6 +203,71 @@ Phoneformat.cleanPhone = function (phone) {
   return phone;
 };
 
+/*
+ * Convert the country code to a name.
+ * @param {String} country The two digit country code.
+ */
+Phoneformat.countryCodeToName = function (countryCode) {
+  if (!countryCode) return '';
+
+  var name = countryCodeToNameArr[countryCode.toUpperCase()];
+  return name || '';
+};
+
+/*
+ * Convert the dial code to a name.
+ * @param {String} dialCode Dial code for a country starting with '+'.
+ */
+Phoneformat.dialCodeToName = function (dialCode) {
+  var name = dialCodeToNameArr[dialCode];
+  return name || '';
+};
+
+/*
+ * Get the country code from a dial code.
+ * @param {String} dialCode Dial code to get country code for.
+ */
+Phoneformat.dialCodeToCountryCode = function (dialCode) {
+  var name = dialCodeToNameArr[dialCode];
+  var countryInfo = COUNTRY_CODE_MAP[name];
+
+  return countryInfo && countryInfo.code;
+};
+
+/*
+ * Get the dial code from a country code.
+ * @param {String} countryCode Country code to get dial code for.
+ */
+Phoneformat.countryCodeToDialCode = function (countryCode) {
+  var country = Phoneformat.countryCodeToName(countryCode);
+  return COUNTRY_CODE_MAP[country] && COUNTRY_CODE_MAP[country].dial_code;
+};
+
+/*
+ * Get the dial code from an international phone number.
+ * @param {String} phoneNumber Phone number to parse dial code from.
+ */
+Phoneformat.phoneNumberToDialCode = function (phoneNumber) {
+  // Just the dial code was given, therefore it should be returned
+  if (dialCodeToNameArr[phoneNumber]) return phoneNumber;
+
+  var countryCode = Phoneformat.countryForE164Number(phoneNumber);
+
+  // If a country code can not be found and the first digits are +1 default to US.
+  if (!countryCode && phoneNumber.indexOf('+1') > -1) countryCode = 'US';
+
+  return Phoneformat.countryCodeToDialCode(countryCode);
+};
+
+/*
+ * Return an object of country names and their dial codes and country codes.
+ * @return {Object}
+ */
+Phoneformat.countryList = function () {
+  return COUNTRY_CODE_MAP;
+};
+
+
 var countryCodeToNameArr = {};
 
 countryCodeToNameArr['AF'] = "Afghanistan";
@@ -447,17 +512,6 @@ countryCodeToNameArr['VN'] = "Viet Nam";
 countryCodeToNameArr['VG'] = "Virgin Islands, British";
 countryCodeToNameArr['VI'] = "Virgin Islands, U.S.";
 
-/*
- * Convert the country code to a name.
- * @param {String} country The two digit country code.
- */
-Phoneformat.countryCodeToName = function (countryCode) {
-  if (!countryCode) return '';
-
-  var name = countryCodeToNameArr[countryCode.toUpperCase()];
-  return name || '';
-};
-
 var dialCodeToNameArr = {};
 
 dialCodeToNameArr['+93'] = "Afghanistan";
@@ -699,25 +753,3 @@ dialCodeToNameArr['+58'] = "Venezuela, Bolivarian Republic of";
 dialCodeToNameArr['+84'] = "Viet Nam";
 dialCodeToNameArr['+1284'] = "Virgin Islands, British";
 dialCodeToNameArr['+1340'] = "Virgin Islands, U.S.";
-
-/*
- * Convert the dial code to a name.
- * @param {String} dialCode Dial code for a country starting with '+'
- */
-Phoneformat.dialCodeToName = function (dialCode) {
-  var name = dialCodeToNameArr[dialCode];
-  return name || '';
-};
-
-Phoneformat.countryCodeToDialCode = function (countryCode) {
-  var country = Phoneformat.countryCodeToName(countryCode);
-  return COUNTRY_CODE_MAP[country] && COUNTRY_CODE_MAP[country].dial_code;
-};
-
-/*
- * Return an object of country names and their dial codes and country codes.
- * @return {Object}
- */
-Phoneformat.countryList = function () {
-  return COUNTRY_CODE_MAP;
-};

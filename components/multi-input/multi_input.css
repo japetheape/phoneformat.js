@@ -1,6 +1,6 @@
-.intlPhone-dialCode,
-.intlPhone-phoneNumber,
-.intlPhone-separator {
+.intlMultiPhone-dialCode,
+.intlMultiPhone-phoneNumber,
+.intlMultiPhone-separator {
   display: inline-block;
   vertical-align: middle;
   border: none;

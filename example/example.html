@@ -1,0 +1,46 @@
+<head>
+  <title>dispatch:phoneformat.js</title>
+</head>
+
+<body>
+  {{> example}}
+</body>
+
+<template name="example">
+  <h3>Single international input</h3>
+
+  {{> InternationalPhoneSingleInput id="testSingle1" hideDialCode=true}}
+
+  <br>
+
+  {{> InternationalPhoneSingleInput id="testSingle2"}}
+
+  <br>
+
+  <h3>Multi international input</h3>
+
+  <select class="js-countrySelector1">
+    <option value="" disabled selected>Select a country...</option>
+    {{#each countries}}
+      <option value="{{countryCode}}">{{name}}</option>
+    {{/each}}
+  </select>
+
+  <br>
+
+  {{> InternationalPhoneMultiInput id="testMulti1"}}
+
+  <br>
+  <br>
+
+  <select class="js-countrySelector2">
+    <option value="" disabled selected>Select a country...</option>
+    {{#each countries}}
+      <option value="{{countryCode}}">{{name}}</option>
+    {{/each}}
+  </select>
+
+  <br>
+
+  {{> InternationalPhoneMultiInput id="testMulti2"}}
+</template>

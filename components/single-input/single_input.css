@@ -1,0 +1,11 @@
+.intlSinglePhone-dialCode,
+.intlSinglePhone-phoneNumber,
+.intlSinglePhone-separator {
+  display: inline-block;
+  vertical-align: middle;
+  border: none;
+  outline: none;
+  height: 100%;
+  float: left;
+  text-align: right;
+}

@@ -1,0 +1,15 @@
+/* CSS declarations go here */
+
+input {
+  border: 1px solid #000 !important;
+}
+
+input:nth-of-type(3) {
+  width: 40px;
+  border-right: none !important;
+}
+
+input:nth-of-type(5) {
+  width: 40px;
+  border-right: none !important;
+}
