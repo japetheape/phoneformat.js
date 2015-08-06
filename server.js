@@ -7,7 +7,7 @@ Meteor.methods({
     var response = null;
 
     // Lookup info for the client's IP address, not the server's
-    var clientIP = this.connection.clientAddress;
+    var clientIP = this.connection.clientAddress || '';
 
     // For local development, client connections are the client's local IP address.
     // Do not pass in an IP address and the lookup will be based on the server's address.
