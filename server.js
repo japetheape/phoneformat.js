@@ -24,7 +24,7 @@ Meteor.methods({
   }
 });
 
-Phoneformat = {};
+
 
 // Configure phoneformat to use https with a token
 Phoneformat.configure = function (options) {

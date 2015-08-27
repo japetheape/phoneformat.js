@@ -32,7 +32,9 @@ Package.onUse(function (api) {
     'http@1.1.0'
   ], 'server');
 
-  api.addFiles('server.js', 'server');
+  api.addFiles(['PhoneFormat.js', 'google.phoneformat.js','country_code_map.js', 'server.js'], 'server');
+
+  api.export(['i18n', 'Phoneformat'], 'server');
 
   api.export(['Phoneformat', 'PhoneInput']);
 });
